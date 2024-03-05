@@ -41,7 +41,7 @@ function Chat() {
         channelID,
         "messages"
       );
-      const q = query(messagesCollection, orderBy("timestamp", "desc"));
+      const q = query(messagesCollection, orderBy("timestamp", "asc"));
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
         setMessages(

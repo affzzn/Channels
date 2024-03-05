@@ -35,6 +35,7 @@
     background: transparent;
     color: white;
     outline-width: 0;
+    font-size: medium;
 }
 
 .chat-input-btn{
