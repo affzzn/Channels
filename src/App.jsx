@@ -1,35 +1,55 @@
 import "./App.css";
 import Chat from "./components/Chat/Chat";
+import Login from "./components/Login/Login";
 import Sidebar from "./components/Sidebar/Sidebar";
+import { useEffect } from "react";
+
+// redux
+
+import { useSelector, useDispatch } from "react-redux";
+import { login, logout } from "./store/slices/userSlice";
+
+// firebase
+import { auth, onAuthStateChanged } from "./firebase/firebase";
 
 function App() {
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      console.log(authUser);
+      if (authUser) {
+        // The user just logged in / the user was logged in
+        dispatch(
+          login({
+            uid: authUser.uid,
+            photo: authUser.photoURL,
+            email: authUser.email,
+            displayName: authUser.displayName,
+          })
+        );
+      } else {
+        // The user is logged out
+        dispatch(logout());
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [auth, dispatch]);
+
   return (
     <div className="app">
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Chat */}
-      <Chat />
+      {user ? (
+        <>
+          <Sidebar /> <Chat />
+        </>
+      ) : (
+        <Login />
+      )}
     </div>
   );
 }
 
 export default App;
-
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
-
-// // Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyAUj2PBEziCw1tP6FoKcGeuiXdACEA4pIY",
-//   authDomain: "chatz-36c5f.firebaseapp.com",
-//   projectId: "chatz-36c5f",
-//   storageBucket: "chatz-36c5f.appspot.com",
-//   messagingSenderId: "520190015924",
-//   appId: "1:520190015924:web:09b628857b45c992fa5ae1"
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);

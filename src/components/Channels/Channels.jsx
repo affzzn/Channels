@@ -5,7 +5,8 @@ function Channels({ id, channel }) {
   return (
     <div className="channels">
       <h4>
-        <span className="channel-hash">#</span>Xbox
+        <span className="channel-hash">#</span>
+        {channel}
       </h4>
     </div>
   );
