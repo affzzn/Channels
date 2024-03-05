@@ -22,7 +22,7 @@ function Chat() {
         <form>
           <input placeholder={`Message #TESTCHANNEL`} />
           <button className="chat-input-btn" type="submit">
-            Send Message
+            Send
           </button>
         </form>
       </div>
