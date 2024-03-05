@@ -1,20 +1,30 @@
+import React, { useEffect, useState } from "react";
+// Other imports remain unchanged
 import "./App.css";
 import Chat from "./components/Chat/Chat";
 import Login from "./components/Login/Login";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
-// redux
+// // redux
 
 import { useSelector, useDispatch } from "react-redux";
 import { login, logout } from "./store/slices/userSlice";
 
-// firebase
+// // firebase
 import { auth, onAuthStateChanged } from "./firebase/firebase";
 
+//mui
+import CircularProgress from "@mui/material/CircularProgress";
+import { CenterFocusStrong } from "@mui/icons-material";
+//
+//
+//
 function App() {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
+  // Loading state to track the auth state check
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
@@ -33,11 +43,28 @@ function App() {
         // The user is logged out
         dispatch(logout());
       }
+      // Set loading to false once we have our user state
+      setLoading(false);
     });
 
     // Cleanup subscription on unmount
     return () => unsubscribe();
-  }, [auth, dispatch]);
+  }, [dispatch]);
+
+  // Render a loading message or spinner while checking user auth state
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress />
+      </div>
+    ); // Or any loading spinner component
+  }
 
   return (
     <div className="app">
