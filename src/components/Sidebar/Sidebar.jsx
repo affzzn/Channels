@@ -60,7 +60,7 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="sidebar-top">
-        <h3>Chatz</h3>
+        <h3>Channels</h3>
         <ArrowDropDownIcon />
       </div>
       <div className="sidebar-channels">
